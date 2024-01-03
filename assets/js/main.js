@@ -1,7 +1,7 @@
 const pokemonList = document.getElementById('pokemonList')
-const loadMoreButton = document.getElementById('loadMoreButton')
+let loadMoreButton = document.getElementById('loadMoreButton')
 let backButton = document.getElementById('backButton')
-let parametro1 = new parametros(151, 0, 1, 0)
+let parametro1 = new parametros(150, 0, 1, 0)
 
 
 // funções
@@ -21,6 +21,15 @@ function convertPokemonToLi(pokemon) {
                 <img src="${pokemon.photo}"
                      alt="${pokemon.name}">
             </div>
+            <div class="stats">
+                <ol class="statsNames">
+                    ${pokemon.statsNames.map((statsName) => `<li class="statsName">${statsName}</li>`).join('')}
+                </ol>
+                <ol class="statsBases">
+                ${pokemon.statsBases.map((statsBase) => `<li class="statsBase">${statsBase}</li>`).join('')}
+                </ol>
+            </div>
+
         </div>
        
     `
@@ -33,18 +42,30 @@ function loadPokemonItens(offset, limit) {
     })
 }
 
-function buttonONOff(minimum, offset, maxRecords) {
+function buttonONOffback(minimum, offset, maxRecords) {
       
-    if (offset > minimum && offset <= maxRecords) {
+    if (offset > minimum && offset < maxRecords) {
         document.getElementById('backButton').disabled = false
     } else {
         document.getElementById('backButton').disabled = true
+        
+    } 
+}
+
+function buttonONOffload(minimum, offset, maxRecords) {
+      
+    if (offset > minimum && offset < maxRecords) {
+        document.getElementById('loadMoreButton').disabled = false
+    } else {
+        document.getElementById('loadMoreButton').disabled = true
+        
     } 
 }
 
 
 // Primeiro carregamento da pokedex
 
+document.getElementById('backButton').disabled = true
 loadPokemonItens(parametro1.offset, parametro1.limit)
 
 
@@ -53,24 +74,21 @@ loadPokemonItens(parametro1.offset, parametro1.limit)
 loadMoreButton.addEventListener('click', () => {
     parametro1.setOffset = parametro1.offset + 1
     
-    buttonONOff(parametro1.minimum, parametro1.offset, parametro1.maxRecords)
+    document.getElementById('backButton').disabled = false
+    
+    buttonONOffload(parametro1.minimum, parametro1.offset, parametro1.maxRecords)
     loadPokemonItens(parametro1.offset, parametro1.limit)
-    
-
-     
-    console.log(parametro1.offset)
-    
+      
+      
 })
 
 backButton.addEventListener('click', () => {
     parametro1.setOffset = parametro1.offset - 1
+
+    document.getElementById('loadMoreButton').disabled = false
     
-    buttonONOff(parametro1.minimum, parametro1.offset, parametro1.maxRecords)
+    buttonONOffback(parametro1.minimum, parametro1.offset, parametro1.maxRecords)
     loadPokemonItens(parametro1.offset, parametro1.limit)
-    
-     
-    console.log(parametro1.offset)
+   
   
 })
-
-

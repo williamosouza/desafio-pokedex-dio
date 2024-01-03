@@ -3,6 +3,10 @@ class Pokemon {
     Number;
     type;
     types = [];
+    statsName;
+    statsNames = [];
+    statsBase;
+    statsBases = [];
     photo;
 
 }
